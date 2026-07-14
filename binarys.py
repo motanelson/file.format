@@ -39,19 +39,26 @@ def readsi(f1):
     ii=struct.unpack('<i',r)
     return ii[0]
 
+def writesb(f1,c):
+    f1.write(bytearray(c))
+    
+def writesf(f1,f):
+    f1.write(struct.pack('<f',f)) 
+
+def writesh(f1,i:int):
+    f1.write(struct.pack('>H',i))
+   
+def savesS(f1,s:str):
+    writesb(f1,[1])
+    writesh(f1,len(s))
+    ss=s+"\x00"
+    writesS(f1,ss)
+
+
 print("\033c\033[47;30m\nwrite")
-r="hello\n"
+r="hello world....\n"
 rr=len(r)
 f1=openw("my.bin")
-writesS(f1,"hello\n")
-writesi(f1,128)
-writesf(f1,math.pi)
-closew(f1)
-
-f1=openr("my.bin")
-print(readsS(f1,rr))
-print(readsi(f1))
-print(readsf(f1))
-
+savesS(f1,r)
 closew(f1)
 
