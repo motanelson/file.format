@@ -50,15 +50,26 @@ def writesh(f1,i:int):
    
 def savesS(f1,s:str):
     writesb(f1,[1])
-    writesh(f1,len(s))
+    writesh(f1,len(s)+1)
     ss=s+"\x00"
     writesS(f1,ss)
 
+def savesm(f1,ar):
+    for a in ar:
+        savesS(f1,a)
+
+
+def savesSBs(f1,ar):
+    writesb(f1,[1])
+    writesh(f1,len(ar)+1)
+    ar.append(0)
+    writesb(f1,ar)
 
 print("\033c\033[47;30m\nwrite")
 r="hello world....\n"
 rr=len(r)
 f1=openw("my.bin")
-savesS(f1,r)
+savesm(f1,["hello world...","hi there...","java hello..."])
+savesSBs(f1,[0,1,2,3,4,5,6,7,8,9,0])
 closew(f1)
 
