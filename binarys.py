@@ -1,5 +1,13 @@
 import struct
 import math
+import os
+def eof(file):
+    current_pos = file.tell()
+    file.seek(0, os.SEEK_END)
+    end_pos = file.tell()
+    file.seek(current_pos)
+    return current_pos == end_pos
+  
 def openw(names:str):
     return open(names,"bw")
 
@@ -29,6 +37,11 @@ def readsS(f1,i:int):
     a=r.decode()
     return a
 
+def readsbb(f1):
+    r=f1.read(1)
+    
+    return r
+
 def readsf(f1):
     r=f1.read(4)
     ff=struct.unpack('<f',r)
@@ -47,6 +60,11 @@ def writesf(f1,f):
 
 def writesh(f1,i:int):
     f1.write(struct.pack('>H',i))
+
+def readsh(f1):
+    a=f1.read(2)
+    return struct.unpack('>H',a)[0]
+
    
 def savesS(f1,s:str):
     writesb(f1,[1])
@@ -72,4 +90,15 @@ f1=openw("my.bin")
 savesm(f1,["hello world...","hi there...","java hello..."])
 savesSBs(f1,[0,1,2,3,4,5,6,7,8,9,0])
 closew(f1)
+f1=openr("my.bin")
+while(1):
+    if eof(f1):
+        exit(1)
+    b=ord(readsbb(f1))
+    print(b)
+    if b==1:
+        a=readsh(f1)
+        print(readsS(f1,a))
+closew(f1)
+
 
